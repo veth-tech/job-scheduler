@@ -1,6 +1,6 @@
 {
   "resource": "/{proxy+}",
-  "path": "/",
+  "path": "/jobs/3",
   "httpMethod": "GET",
   "headers": {
     "Accept": "*/*",
@@ -103,10 +103,10 @@
   "requestContext": {
     "resourceId": "xxxxx",
     "resourcePath": "/{proxy+}",
-    "httpMethod": "POST",
+    "httpMethod": "GET",
     "extendedRequestId": "Z2SQlEORIAMFjpA=",
     "requestTime": "17/May/2019:22:08:16 +0000",
-    "path": "/prod/",
+    "path": "/prod/jobs",
     "accountId": "xxxxxxxx",
     "protocol": "HTTP/1.1",
     "stage": "prod",

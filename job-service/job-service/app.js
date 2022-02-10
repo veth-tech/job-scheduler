@@ -1,101 +1,71 @@
-const path = require('path')
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const compression = require('compression')
-const { getCurrentInvoke } = require('@vendia/serverless-express')
-const app = express()
-const router = express.Router()
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const compression = require("compression");
+const { getCurrentInvoke } = require("@vendia/serverless-express");
+const { createClient } = require("@supabase/supabase-js");
+const app = express();
+const router = express.Router();
 
-router.use(compression())
+router.use(compression());
+router.use(cors());
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
-router.use(cors())
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
+const supabaseUrl = "https://qhzyckxjlrnhacqmxydk.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoenlja3hqbHJuaGFjcW14eWRrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY0NDQ1OTc2MCwiZXhwIjoxOTYwMDM1NzYwfQ.Ij5wbt0-HKKHK-OpkkxzonRV_ovfva0wkYT7D2e_KI0";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
+router.get("/", async (req, res) => {
+  let { data: jobs, error } = await supabase.from("jobs").select("*");
+  res.json(jobs);
+});
 
+router.get("/jobs/:jobId", async (req, res) => {
+  const jobId = req.params.jobId;
+  if (!jobId) return res.status(404).json({});
 
+  let { data: jobs, error } = await supabase
+    .from("jobs")
+    .select("*")
+    .eq("id", jobId);
 
-router.get('/', (req, res) => {
-  const currentInvoke = getCurrentInvoke()
-  const { event = {} } = currentInvoke
-  const {
-    requestContext = {},
-    multiValueHeaders = {}
-  } = event
-  const { stage = '' } = requestContext
-  const {
-    Host = ['localhost:3000']
-  } = multiValueHeaders
-  const apiUrl = `https://${Host[0]}/${stage}`
-//   res.render('index', {
-//     apiUrl,
-//     stage
-//   })
-  res.json({"meow": "cats"})
-})
+  return res.json(jobs);
+});
 
+router.post("/jobs", async (req, res) => {
+  // const { event, context } = getCurrentInvoke()
+  console.log("req.body", req.body);
+  const { type, isRecurring } = req.body
+  const { data, error } = await supabase
+    .from("jobs")
+    .insert([{ type: type, isRecurring: isRecurring, }]);
+    if(error) return res.status(500).json(error)
+  res.status(201).json(data);
+});
 
+router.put("/jobs/:jobId", async (req, res) => {
+  const jobId = req.params.jobId;
 
+  if (!jobId) return res.status(404).json({});
+  const { type, isRecurring } = req.body
+  const { data, error } = await supabase
+    .from("jobs")
+    .upsert([{ id: jobId, type: type, isRecurring: isRecurring, }]);
+    
+    if(error) return res.status(500).json(error)
+  res.status(200).json(data);
+});
 
-// router.get('/users/:userId', (req, res) => {
-//   const user = getUser(req.params.userId)
+router.delete("/jobs/:jobId", async (req, res) => {
+  const jobId = req.params.jobId;
 
-//   if (!user) return res.status(404).json({})
+  if (!jobId) return res.status(404).json({});
 
-//   return res.json(user)
-// })
+  const { data, error } = await supabase.from("jobs").delete().eq("id", jobId);
+  res.status(200).json(data);
+});
 
-// router.post('/users', (req, res) => {
-//   const user = {
-//     id: ++userIdCounter,
-//     name: req.body.name
-//   }
-//   users.push(user)
-//   res.status(201).json(user)
-// })
-
-// router.put('/users/:userId', (req, res) => {
-//   const user = getUser(req.params.userId)
-
-//   if (!user) return res.status(404).json({})
-
-//   user.name = req.body.name
-//   res.json(user)
-// })
-
-// router.delete('/users/:userId', (req, res) => {
-//   const userIndex = getUserIndex(req.params.userId)
-
-//   if (userIndex === -1) return res.status(404).json({})
-
-//   users.splice(userIndex, 1)
-//   res.json(users)
-// })
-
-// router.get('/cookie', (req, res) => {
-//   res.cookie('Foo', 'bar')
-//   res.cookie('Fizz', 'buzz')
-//   res.json({})
-// })
-
-const getUser = (userId) => users.find(u => u.id === parseInt(userId))
-const getUserIndex = (userId) => users.findIndex(u => u.id === parseInt(userId))
-
-// Ephemeral in-memory data store
-const users = [{
-  id: 1,
-  name: 'Joe'
-}, {
-  id: 2,
-  name: 'Jane'
-}]
-let userIdCounter = users.length
-
-// The serverless-express library creates a server and listens on a Unix
-// Domain Socket for you, so you can remove the usual call to app.listen.
-// app.listen(3000)
-app.use('/', router)
-
-// Export your express server so you can import it in the lambda function.
-module.exports = app
+app.use("/", router);
+module.exports = app;
