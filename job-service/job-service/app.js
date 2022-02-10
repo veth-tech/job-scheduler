@@ -4,8 +4,12 @@ const cors = require("cors");
 const compression = require("compression");
 const { getCurrentInvoke } = require("@vendia/serverless-express");
 const { createClient } = require("@supabase/supabase-js");
+var dayjs = require('dayjs');
+const { unix } = require("dayjs");
 const app = express();
 const router = express.Router();
+
+
 
 router.use(compression());
 router.use(cors());
@@ -35,14 +39,33 @@ router.get("/jobs/:jobId", async (req, res) => {
 });
 
 router.post("/jobs", async (req, res) => {
-  // const { event, context } = getCurrentInvoke()
-  console.log("req.body", req.body);
-  const { type, isRecurring } = req.body
+    //   Destructure arguments to make sure we only set what the DB needs
+    const { name, type, isRecurring, nextExecutionTime, frequency } = req.body
+
+    if(isRecurring && !frequency){
+        res.status(500).json({"error": "If isRecurring = true, frequency must be supplied"})
+    }
+    if(frequency && (frequency !== "weekly" && frequency !== "daily")){
+        res.status(500).json({"error": "frequency must equal 'weekly' or 'daily'"})
+    }
+    if(nextExecutionTime && !dayjs(nextExecutionTime).isValid() ){
+        res.status(500).json({"error": "nextExecutionTime is not a valid unix timestamp in seconds"})
+    }
+    if(nextExecutionTime && dayjs().unix() > nextExecutionTime){
+        res.status(500).json({"error": "nextExecutionTime is not in the future, pick a time in the future"})
+    }
+    
   const { data, error } = await supabase
     .from("jobs")
-    .insert([{ type: type, isRecurring: isRecurring, }]);
+    .insert([{ 
+        name: name,
+        type: type, 
+        isRecurring: isRecurring, 
+        nextExecutionTime: nextExecutionTime ? nextExecutionTime : dayjs().unix(),
+        frequency: frequency
+    }]);
     if(error) return res.status(500).json(error)
-  res.status(201).json(data);
+  res.status(201).json(data); 
 });
 
 router.put("/jobs/:jobId", async (req, res) => {
