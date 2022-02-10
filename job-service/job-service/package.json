@@ -1,0 +1,27 @@
+{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "hello world sample for NodeJS",
+  "main": "app.js",
+  "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "scripts": {
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "@vendia/serverless-express": "^4.3.0",
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "cors": "^2.8.3",
+    "ejs": "^3.1.6",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^7.0.0",
+    "cross-var": "^1.1.0",
+    "source-map-support": "^0.5.19",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
+  }
+}
