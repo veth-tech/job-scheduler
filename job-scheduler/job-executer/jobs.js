@@ -4,7 +4,7 @@ exports.sendEmail = (job) => {
     return { success: true }
 }
 
-exports.callAPI = () => {
+exports.callAPI = (job) => {
     console.log("Calling API!!!")
     console.log('job', job)
     return { success: true }

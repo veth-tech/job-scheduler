@@ -130,6 +130,6 @@
     "domainName": "xxxxxx.execute-api.us-east-1.amazonaws.com",
     "apiId": "xxxxxx"
   },
-  "body": "{\"type\": \"callAPI\", \"isRecurring\": true, \"nextExecutionTime\": 1644523002, \"name\": \"Call API\", \"frequency\": \"daily\"}",
+  "body": "{\"type\": \"callAPI\", \"isRecurring\": true, \"nextExecutionTime\": 1644534129, \"name\": \"Call API\", \"frequency\": \"daily\"}",
   "isBase64Encoded": false
 }

@@ -2,9 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
   job-service
-
   Sample SAM Template for job-service
-  
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -22,8 +20,6 @@ Resources:
     Properties:
       CodeUri: job-service/
       Handler: lambda.handler
-      # CodeUri: ./dist
-      # Handler: main.handler
       Runtime: nodejs14.x
       MemorySize: 1024
       Timeout: 30

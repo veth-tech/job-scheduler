@@ -1,28 +1,42 @@
 # job-service
+This is a serverless express function. It has several routes to Prodvide CRUD for creating and managing jobs. It saves all of the job data to a DB, which is currently a supabase table. All of the infrastructure for deploying and configuring this is contained here in the code. You can deploy an exact copy to your own AWS instance, using AWS SAM CLI. 
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+## Job Options
+These are sample jobs you can pass into the body on POST requests to to the /jobs route. 
 
-- hello-world - Code for the application's Lambda function.
-- events - Invocation events that you can use to invoke the function.
-- hello-world/tests - Unit tests for the application code. 
-- template.yaml - A template that defines the application's AWS resources.
+```
+<!-- immediate -->
+{
+    "type": "sendEmail",
+    "name": "Send email now",
+}
+<!-- In the future -->
+{
+    "type": "sendEmail",
+    "name": "Send email in 15 mins",
+    "isRecurring": false,
+    <!-- Need to call dayjs().add(15, "minute").unix() to make new time stamp -->
+    "nextExecutionTime": 1644533557
+}
+<!-- Recurring daily -->
+{
+    "name": "Call API Daily",
+    "type": "callAPI",
+    "isRecurring": true,
+    "frequency": "daily"
+}
+<!-- Recurring weekly -->
+ {
+    "name": "Send Email Weekly",
+    "type": "sendEmail",
+    "isRecurring": true,
+    "frequency": "weekly"
+}
+```
+
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
 
-If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.  
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
-
-* [CLion](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [GoLand](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [IntelliJ](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [WebStorm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [Rider](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [PhpStorm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [PyCharm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [RubyMine](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [DataGrip](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html)
-* [Visual Studio](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/welcome.html)
 
 ## Deploy the sample application
 
@@ -66,25 +80,10 @@ Test a single function by invoking it directly with a test event. An event is a 
 Run functions locally and invoke them with the `sam local invoke` command.
 
 ```bash
-job-service$ sam local invoke HelloWorldFunction --event events/event.json
-```
-
-The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
-
-```bash
-job-service$ sam local start-api
-job-service$ curl http://localhost:3000/
-```
-
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
-
-```yaml
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
+job-service$  sam local invoke -e events/event-post.json
+job-service$  sam local invoke -e events/event-put.json
+job-service$  sam local invoke -e events/event-delete.json
+job-service$  sam local invoke -e events/event-get.json
 ```
 
 ## Add a resource to your application
@@ -102,15 +101,6 @@ job-service$ sam logs -n HelloWorldFunction --stack-name job-service --tail
 
 You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
 
-## Unit tests
-
-Tests are defined in the `hello-world/tests` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
-
-```bash
-job-service$ cd hello-world
-hello-world$ npm install
-hello-world$ npm run test
-```
 
 ## Cleanup
 
