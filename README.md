@@ -8,6 +8,7 @@ The second lambda function, app.js in the job-scheduler/job-executer folder, is 
 
 ## You can test it out at:
 `https://64yecfqnn0.execute-api.us-east-1.amazonaws.com/prod`
+I also added a postman export to the root here, if you're into that kind of thing. 
 
 ## The routes are super simple
 - Get all jobs:

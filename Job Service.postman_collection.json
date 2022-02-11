@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "b6d42a47-9b80-48f6-9b33-de72e51fb6ee",
+		"name": "Job Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Jobs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"sendEmail\",\n    \"name\": \"Send email in 15 mins 3\",\n    \"isRecurring\": false,\n    \"nextExecutionTime\": 1644535243\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nextExecutionTime\": 1644533075\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/30",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Job",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"isRecurring\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/30",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"30"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://64yecfqnn0.execute-api.us-east-1.amazonaws.com/prod"
+		}
+	]
+}
