@@ -1,6 +1,8 @@
 # jobScheduler
 This is a serverless function. It is invoked once every minute with a CRON event on AWS. When invoked it reaches out to the DB and queries for any ACTIVE jobs that have a next invocation time before the current time. It then loops through the array of jobs and invokes the jobs. Right now those jobs are functions in the jobs.js file. To expand this, I would make each job an independant lambda function that is invoked by this one. That would allow infinite scale and prevent one broken job from stopping this function's exectuion. 
 
+When a job is invoked, we update the DB with a new invocation time (if recurring) and increment the succesfulExecutions value. If the job only runs once, we set it to be inactive. 
+
 Just like the other function, 100% of the configuration and infrastructure for this function is contained here in the code. 
 
 Cron event to invoke function every minute, from template.yaml.
