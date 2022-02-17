@@ -1,0 +1,36 @@
+version: 0.2
+
+env:
+  variables:
+    FIRST: "The First Variable"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands: 
+      - echo This is going to work!...
+      - echo :fingers_crossed
+    finally: 
+      - echo Phase -- install -- finally
+  pre_build:
+    commands: 
+      - echo Phase -- pre_build -- commands
+    finally:  
+      - echo Phase -- pre_build -- finally
+  build:
+    commands: 
+      - echo Phase -- build -- commands
+      - sam build
+    finally: 
+      - echo Phase -- build -- finally
+  post_build:
+    commands: 
+      - echo Phase -- post_build -- commands
+      - sam deploy
+      - echo So... many... phases...
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - job-scheduler/*
+    - job-service/*
