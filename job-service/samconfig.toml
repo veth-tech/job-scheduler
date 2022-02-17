@@ -6,6 +6,6 @@ stack_name = "sam-job-service"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1sd8q7tvppwrt"
 s3_prefix = "sam-job-service"
 region = "us-east-1"
-confirm_changeset = true
+confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
 image_repositories = []

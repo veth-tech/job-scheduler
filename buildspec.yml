@@ -29,7 +29,6 @@ phases:
     commands: 
       - echo Phase -- post_build -- commands
       - sam deploy
-      - y
       - echo So... many... phases...
       - echo Build completed on `date`
 artifacts:
