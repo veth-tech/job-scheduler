@@ -8,7 +8,7 @@ These are sample jobs you can pass into the body on POST requests to to the /job
 <!-- immediate -->
 {
     "type": "sendEmail",
-    "name": "Send email now",
+    "name": "Send email now"
 }
 <!-- In the future -->
 {

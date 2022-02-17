@@ -130,6 +130,6 @@
     "domainName": "xxxxxx.execute-api.us-east-1.amazonaws.com",
     "apiId": "xxxxxx"
   },
-  "body": "{\"type\": \"callAPI\", \"isRecurring\": true, \"nextExecutionTime\": 1644534129, \"name\": \"Call API\", \"frequency\": \"daily\"}",
+  "body": "{\"type\": \"callAPI\", \"isRecurring\": true, \"nextExecutionTime\": 1645546141, \"name\": \"Call API local lambda test\", \"frequency\": \"daily\", \"desc_test\": \"This is my test description\"}",
   "isBase64Encoded": false
 }

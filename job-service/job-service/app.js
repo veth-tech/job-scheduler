@@ -40,7 +40,8 @@ router.get("/jobs/:jobId", async (req, res) => {
 
 router.post("/jobs", async (req, res) => {
   //   Destructure arguments to make sure we only set what the DB needs
-  const { name, type, isRecurring, nextExecutionTime, frequency } = req.body;
+  const { name, type, isRecurring, nextExecutionTime, frequency, desc_test } = req.body;
+  console.log('req.body', req.body)
 
   // I have done a little safety here, but in PROD this could probably be more robust.
   if (isRecurring && !frequency) {
@@ -77,6 +78,7 @@ router.post("/jobs", async (req, res) => {
       isRecurring: isRecurring,
       nextExecutionTime: nextExecutionTime ? nextExecutionTime : dayjs().unix(),
       frequency: frequency,
+      desc_test: desc_test
     },
   ]);
   if (error) return res.status(500).json(error);
