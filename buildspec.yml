@@ -16,6 +16,7 @@ phases:
   pre_build:
     commands: 
       - echo Phase -- pre_build -- commands
+      - cd job-service
     finally:  
       - echo Phase -- pre_build -- finally
   build:
