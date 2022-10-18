@@ -1,5 +1,7 @@
 # Serverless Job Service
 
+https://www.loom.com/share/9c2d93ce7ffb42ce99026c7c2a17ac0f
+
 Hello and welcome to the serverless job service! This project has 2 lambda functions and a DB (supabase) to create a job service. 
 
 The first lambda function, app.js in the job-service/job-service folder, is an express server the manages CRUD for the jobs. It writes all of its data to the DB. 
